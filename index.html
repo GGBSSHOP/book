@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Книга от адеквата</title>
+    
+    <!-- Favicon PNG -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <!-- Подключение локального шрифта TTF -->
+    <style>
+        @font-face {
+            font-family: 'MyCustomFont';
+            src: url('font.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'MyCustomFont', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        .site-title, .page-btn {
+            font-family: 'MyCustomFont', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        }
+    </style>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'MyCustomFont', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 80px;
+        }
+
+        .site-header {
+            background: white;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 100;
+        }
+
+        .site-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        .site-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .site-subtitle {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content {
+            flex: 1;
+            padding: 3rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .content-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .content-section h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            font-weight: 700;
+            border-left: 5px solid #667eea;
+            padding-left: 1rem;
+        }
+
+        .story-text {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            white-space: pre-line;
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        /* Контейнер пагинации */
+        .pagination-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.2rem 0;
+            border-top: 1px solid rgba(236, 239, 241, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Пагинация с тремя кнопками */
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 1.5rem;
+        }
+
+        /* Три кнопки пагинации */
+        .pagination-buttons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .page-btn {
+            padding: 0.8rem 1.5rem;
+            background: white;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4a5568;
+            transition: all 0.3s ease;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .page-btn:hover:not(.active):not(:disabled) {
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+        .page-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-section {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .site-title {
+                font-size: 2.2rem;
+                letter-spacing: 1px;
+            }
+            
+            .site-subtitle {
+                font-size: 1rem;
+            }
+            
+            .content {
+                padding: 2rem 1rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+            
+            .pagination {
+                gap: 0.8rem;
+            }
+            
+            .page-btn {
+                padding: 0.7rem 1rem;
+                font-size: 0.95rem;
+                min-width: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .site-title {
+                font-size: 1.8rem;
+            }
+            
+            .content-section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .pagination {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .pagination-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .page-btn {
+                min-width: 90px;
+            }
+        }
+
+        .decoration {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .decoration-1 {
+            top: 20%;
+            left: 5%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+        }
+
+        .decoration-2 {
+            bottom: 20%;
+            right: 5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(118, 75, 162, 0.1) 0%, transparent 70%);
+        }
+    </style>
+</head>
+<body>
+    <!-- Декоративные элементы -->
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+
+    <!-- Шапка сайта -->
+    <header class="site-header">
+        <h1 class="site-title">Книга от адеквата</h1>
+        <p class="site-subtitle">История об утре с Сакурой</p>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="content">
+        <!-- Глава 1 -->
+        <section class="content-section" id="content-1">
+            <h2>Глава 1: Утро</h2>
+            <div class="story-text">
+Утро, суббота, мы с Сакурой спим.
+
+Я просыпаюсь, Сакура всё ещё спит… Несмотря на то что она кошка и должна меня почувствовать…
+
+Я:
+(Серьёзно?Даже ухом не пошевелит?)
+
+Я сполз с кровати.
+
+Я:
+(Ну и ладно.Пойду чай попью.)
+
+Я вышел из комнаты. Сакура всё ещё спала.
+            </div>
+        </section>
+
+        <!-- Глава 2 -->
+        <section class="content-section" id="content-2" style="display: none;">
+            <h2>Глава 2: Чайник</h2>
+            <div class="story-text">
+Я:
+Так,чайник.
+
+Я касаюсь чайника, рефлекторно отдергиваю руку.
+
+Я:
+Ага,прям кипяток.
+
+Чайник холодный, его ведь никто не кипятил…
+
+Я включил плиту, сел в ожидании.
+
+…
+
+Чайник вскипел, я сделал чай.
+            </div>
+        </section>
+
+        <!-- Глава 3 -->
+        <section class="content-section" id="content-3" style="display: none;">
+            <h2>Глава 3: Утренние мысли</h2>
+            <div class="story-text">
+Утро, чай. За окном нарастающий шум города. Куда люди вообще ездят в 4–5 утра!?
+
+Вскоре я допил чай. Почему я не сделал завтрак? Да потому что я уже привык голодать неделями.
+
+Я:
+(Не то чтобы было нечего есть…)
+            </div>
+        </section>
+
+        <!-- Глава 4 -->
+        <section class="content-section" id="content-4" style="display: none;">
+            <h2>Глава 4: Лень или практичность?</h2>
+            <div class="story-text">
+Я:
+(Просто вот эта вся возня…)
+
+Я:
+Достать тарелку,наложить, разогреть, помыть тарелку…
+
+Я:
+Не хочу заморачиваться…
+            </div>
+        </section>
+
+        <!-- Глава 5 -->
+        <section class="content-section" id="content-5" style="display: none;">
+            <h2>Глава 5: Неожиданное пробуждение</h2>
+            <div class="story-text">
+Сакура:
+Ясно.
+
+Я чуть не упал со стула.
+
+Я:
+Ты что!?
+
+Сакура:
+То есть тебе серьёзно лень достать и помыть тарелку?
+
+Я:
+Ну…Да…
+
+Сакура:
+Боже…Ну что за человек…
+            </div>
+        </section>
+
+        <!-- Глава 6 -->
+        <section class="content-section" id="content-6" style="display: none;">
+            <h2>Глава 6: Двусмысленное предложение</h2>
+            <div class="story-text">
+Она подошла ближе, я всё ещё сидел на стуле.
+
+Сакура наклонилась.
+
+Сакура:
+Так может…Я возьму инициативу на себя~?
+
+Я:
+Кхм…Что это за двусмысленные предложения…
+
+Она усмехнулась.
+
+Я:
+Да,был бы не против…
+            </div>
+        </section>
+
+        <!-- Глава 7 -->
+        <section class="content-section" id="content-7" style="display: none;">
+            <h2>Глава 7: Завтрак</h2>
+            <div class="story-text">
+Она начала готовить.
+
+…
+
+Вскоре всё было готово, и мы поели.
+            </div>
+        </section>
+
+        <!-- Глава 8 -->
+        <section class="content-section" id="content-8" style="display: none;">
+            <h2>Глава 8: Рабские обязанности</h2>
+            <div class="story-text">
+Сакура:
+Посуду моешь ты~
+
+Я:
+В-в смысле!?В смысле, как это!?
+
+Сакура:
+Ну…Всё-таки ты мой раб~
+
+Я:
+Да блин!Нет! Ну за что!?
+            </div>
+        </section>
+
+        <!-- Глава 9 -->
+        <section class="content-section" id="content-9" style="display: none;">
+            <h2>Глава 9: Неотвратимое</h2>
+            <div class="story-text">
+Она встала и положила обе тарелки в раковину.
+
+Сакура:
+Мой уже.
+
+Я:
+А можно вопрос?
+
+Она повернулась ко мне.
+
+Сакура:
+Да…?
+            </div>
+        </section>
+
+        <!-- Глава 10 -->
+        <section class="content-section" id="content-10" style="display: none;">
+            <h2>Глава 10: Неожиданный ответ</h2>
+            <div class="story-text">
+Я:
+Почему ты сегодня так долго спала?Даже когда я на кухне начал шуметь…
+
+Она усмехнулась.
+
+Сакура:
+А кто сказал,что я спала?
+
+Я:
+А…Ой…
+            </div>
+        </section>
+    </main>
+
+    <!-- Пагинация с тремя кнопками -->
+    <div class="pagination-container">
+        <div class="pagination">
+            <div class="pagination-buttons" id="page-buttons">
+                <!-- Кнопки будут генерироваться JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const pageButtonsContainer = document.getElementById('page-buttons');
+            const contentSections = document.querySelectorAll('.content-section');
+            
+            let currentPage = 1;
+            const totalPages = 10;
+            
+            // Функция для обновления трех кнопок пагинации
+            function updatePageButtons() {
+                pageButtonsContainer.innerHTML = '';
+                
+                // Предыдущая страница (если есть)
+                if (currentPage > 1) {
+                    const prevPageBtn = document.createElement('button');
+                    prevPageBtn.className = 'page-btn';
+                    prevPageBtn.textContent = currentPage - 1;
+                    prevPageBtn.setAttribute('data-page', currentPage - 1);
+                    pageButtonsContainer.appendChild(prevPageBtn);
+                }
+                
+                // Текущая страница
+                const currentPageBtn = document.createElement('button');
+                currentPageBtn.className = 'page-btn active';
+                currentPageBtn.textContent = currentPage;
+                currentPageBtn.setAttribute('data-page', currentPage);
+                pageButtonsContainer.appendChild(currentPageBtn);
+                
+                // Следующая страница (если есть)
+                if (currentPage < totalPages) {
+                    const nextPageBtn = document.createElement('button');
+                    nextPageBtn.className = 'page-btn';
+                    nextPageBtn.textContent = currentPage + 1;
+                    nextPageBtn.setAttribute('data-page', currentPage + 1);
+                    pageButtonsContainer.appendChild(nextPageBtn);
+                }
+                
+                // Добавляем обработчики для новых кнопок
+                document.querySelectorAll('.page-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const page = parseInt(this.getAttribute('data-page'));
+                        if (page !== currentPage) {
+                            currentPage = page;
+                            updateContent(currentPage);
+                            updatePageButtons();
+                        }
+                    });
+                });
+            }
+            
+            // Функция обновления контента
+            function updateContent(page) {
+                contentSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                
+                const targetSection = document.getElementById(`content-${page}`);
+                if (targetSection) {
+                    targetSection.style.display = 'block';
+                }
+                
+                // Прокрутка вверх при смене страницы
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
+            // Клавиатурная навигация
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'ArrowLeft' && currentPage > 1) {
+                    currentPage--;
+                    updateContent(currentPage);
+                    updatePageButtons();
+                } else if (event.key === 'ArrowRight' && currentPage < totalPages) {
+                    currentPage++;
+                    updateContent(currentPage);
+                    updatePageButtons();
+                }
+            });
+            
+            // Инициализация
+            updateContent(currentPage);
+            updatePageButtons();
+            
+            // Анимация при загрузке
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+            
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease-in';
+        });
+    </script>
+</body>
+</html>
