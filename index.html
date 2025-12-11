@@ -121,34 +121,38 @@
         }
 
         .story-text {
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            white-space: pre-line;
-            word-wrap: break-word; /* Перенос длинных слов */
-            overflow-wrap: break-word; /* Современный аналог */
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-        }
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    white-space: pre-line;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+}
 
-        /* Контейнер пагинации */
-        .pagination-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1.2rem 0;
-            border-top: 1px solid rgba(236, 239, 241, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-        }
+/* ФИОЛЕТОВЫЕ ССЫЛКИ В ТЕКСТЕ */
+.story-text a {
+    color: #764ba2; /* Фиолетовый цвет */
+    text-decoration: none; /* Без подчёркивания */
+}
+
+.story-text a:hover {
+    color: #667eea; /* Синеватый при наведении */
+    text-decoration: underline; /* Подчёркиваем при наведении */
+    text-decoration-color: #764ba2;
+}
+
+.story-text a:active {
+    color: #8B5FBF; /* Светло-фиолетовый при клике */
+}
+
+.story-text a:visited {
+    color: #5D3A8C; /* Тёмно-фиолетовый для посещённых */
+}
 
         /* Пагинация с тремя кнопками */
         .pagination {
@@ -481,7 +485,9 @@
 Я:
 А…Ой…
                 
-А поддержать автора вы можете по этой ссылке: https://www.donationalerts.com/r/adekvat_2008
+А поддержать автора вы можете по этой ссылке: <a href="https://www.donationalerts.com/r/adekvat_2008" target="_blank">
+        https://www.donationalerts.com/r/adekvat_2008
+    </a>
             </div>
         </section>
     </main>
