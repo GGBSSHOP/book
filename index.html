@@ -31,6 +31,8 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         html {
@@ -176,7 +178,7 @@
         .page-btn {
             padding: 0.8rem 1.5rem;
             background: white;
-            border: 2px solid #e1e8ed;
+            border: 2px solid #4a5568;
             border-radius: 12px;
             cursor: pointer;
             font-size: 1.1rem;
@@ -195,10 +197,17 @@
         }
 
         .page-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient( 135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border-color: transparent;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            border: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            min-width: 110px;
+            min-height: 55px;
+            text-align: center;
         }
 
         .page-btn:disabled {
@@ -292,7 +301,214 @@
             height: 400px;
             background: radial-gradient(circle, rgba(118, 75, 162, 0.1) 0%, transparent 70%);
         }
+    
+        /* Стили для плашек социальных сетей на странице 10 */
+.social-bricks {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 15px;
+}
+
+.brick {
+    width: 100%;
+    height: 72px; /* Увеличил на 2px для большего градиента */
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.4s ease;
+    cursor: pointer;
+}
+
+.brick:hover {
+    transform: translateY(-5px);
+}
+
+.brick-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff; /* БЕЛЫЙ текст */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    backface-visibility: hidden;
+    transition: all 0.3s ease;
+    padding: 0 10px;
+    /* Добавляем небольшую тень для лучшей видимости белого текста */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.icon {
+    margin-right: 8px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    color: #ffffff; /* БЕЛЫЕ иконки */
+    /* Тень для иконок */
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+}
+
+.svg-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    /* Тень для SVG иконок */
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+}
+
+.svg-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* SVG иконки - все БЕЛЫЕ */
+.email-icon svg path,
+.email-icon svg polygon {
+    fill: white;
+}
+
+.donation-icon svg path {
+    fill: white;
+}
+
+/* ЦВЕТА ПРИ НАВЕДЕНИИ */
+.youtube:hover .brick-face { 
+    background: #FF0000; 
+    color: white;
+}
+
+.youtube:hover .icon {
+    color: white;
+}
+
+.почта:hover .brick-face { 
+    background: #ca3737; 
+    color: white;
+}
+
+.почта:hover .email-icon svg path,
+.почта:hover .email-icon svg polygon {
+    fill: white;
+}
+
+.telegram:hover .brick-face { 
+    background: #0088cc; 
+    color: white;
+}
+
+.telegram:hover .icon {
+    color: white;
+}
+
+.donationalerts:hover .brick-face { 
+    background: linear-gradient(382deg, #F57507 0%, #F59C07 100%); 
+    color: white;
+}
+
+.donationalerts:hover .donation-icon svg path {
+    fill: white;
+}
+
+.donation-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.1;
+    font-size: 14px;
+    color: #ffffff; /* БЕЛЫЙ текст */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.donationalerts:hover .donation-text {
+    color: white;
+}
+
+.donation-text span {
+    display: block;
+}
+
+/* Анимация появления плашек */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.social-bricks {
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+/* Адаптивность плашек */
+@media (max-width: 1024px) {
+    .social-bricks {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .social-bricks {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .brick {
+        height: 65px; /* Немного меньше на мобильных */
+    }
+    
+    .brick-face {
+        font-size: 14px;
+    }
+    
+    .donation-text {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .brick {
+        height: 60px;
+    }
+}
+
+/* Анимация появления плашек */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.social-bricks {
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <!-- Декоративные элементы -->
@@ -470,7 +686,7 @@
             </div>
         </section>
 
-        <!-- Глава 10 -->
+                <!-- Глава 10 -->
         <section class="content-section" id="content-10" style="display: none;">
             <h2>Глава 10: Неожиданный ответ</h2>
             <div class="story-text">
@@ -484,10 +700,56 @@
 
 Я:
 А…Ой…
+            </div>
+            
+            <!-- Плашки социальных сетей -->
+            <div class="social-bricks">
+                <!-- YouTube -->
+                <div class="brick youtube">
+                    <div class="brick-face">
+                        <i class="icon fab fa-youtube"></i>
+                        YouTube
+                    </div>
+                </div>
+
+                <!-- Почта -->
+                <div class="brick почта">
+                    <div class="brick-face">
+                        <div class="svg-icon email-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                                <path fill="white" d="M45,16.2l-5,2.75l-5,4.75L35,40h7c1.657,0,3-1.343,3-3V16.2z"/>
+                                <path fill="white" d="M3,16.2l3.614,1.71L13,23.7V40H6c-1.657,0-3-1.343-3-3V16.2z"/>
+                                <polygon fill="white" points="35,11.2 24,19.45 13,11.2 12,17 13,23.7 24,31.95 35,23.7 36,17"/>
+                                <path fill="white" d="M3,12.298V16.2l10,7.5V11.2L9.876,8.859C9.132,8.301,8.228,8,7.298,8h0C4.924,8,3,9.924,3,12.298z"/>
+                                <path fill="white" d="M45,12.298V16.2l-10,7.5V11.2l3.124-2.341C38.868,8.301,39.772,8,40.702,8h0 C43.076,8,45,9.924,45,12.298z"/>
+                            </svg>
+                        </div>
+                        Gmail
+                    </div>
+                </div>
                 
-А поддержать автора вы можете по этой ссылке: <a href="https://www.donationalerts.com/r/adekvat_2008" target="_blank">
-        https://www.donationalerts.com/r/adekvat_2008
-    </a>
+                <!-- DonationAlerts -->
+                <div class="brick donationalerts">
+                    <div class="brick-face">
+                        <div class="svg-icon donation-icon">
+                            <svg viewBox="0 0 37 43" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="white" fill-rule="nonzero" d="M18.692 25.041h-2.906a.63.63 0 0 1-.445-.175.502.502 0 0 1-.152-.415l.257-2.626c.025-.28.285-.495.596-.494h2.907c.17 0 .33.063.445.176.113.112.169.263.152.414l-.257 2.627c-.025.28-.285.494-.597.493zm.466-5.143h-2.96a.582.582 0 0 1-.593-.571l.806-8.875a.585.585 0 0 1 .592-.503h2.96c.327 0 .593.256.593.571l-.83 8.88a.585.585 0 0 1-.568.498zM36.566 9.549L28.898.63A1.81 1.81 0 0 0 27.525 0H4.56a1.803 1.803 0 0 0-1.8 1.616L.006 32.896c-.044.503.126 1 .468 1.373a1.81 1.81 0 0 0 1.332.582h4.51L5.63 43l8.869-8.143h10.074c.47 0 .922-.18 1.26-.507l9.462-9.155c.312-.302.504-.705.541-1.137l1.157-13.184a1.794 1.794 0 0 0-.427-1.325zm-7.013 11.994a1.796 1.796 0 0 1-.541 1.142l-5.478 5.197a1.81 1.81 0 0 1-1.249.496h-13.4a1.831 1.831 0 0 1-1.324-.59 1.816 1.816 0 0 1-.476-1.365L8.707 8.11a1.803 1.803 0 0 1 1.8-1.616h13.628c.522 0 1.02.226 1.362.62l4.326 4.976c.326.358.494.832.465 1.314l-.735 8.138z"/>
+                            </svg>
+                        </div>
+                        <div class="donation-text">
+                            <span>Donation</span>
+                            <span>Alerts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Telegram -->
+                <div class="brick telegram">
+                    <div class="brick-face">
+                        <i class="icon fab fa-telegram"></i>
+                        Telegram
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -591,6 +853,38 @@
             document.body.style.opacity = '0';
             document.body.style.transition = 'opacity 0.5s ease-in';
         });
+    
+document.addEventListener('DOMContentLoaded', function() {
+    
+    function setupSocialBricks() {
+        document.querySelectorAll('.brick').forEach(brick => {
+            brick.addEventListener('click', function() {
+                const platform = this.classList[1];
+                
+                const links = {
+                    'youtube': 'https://www.youtube.com/@Adekvat_2008',
+                    'почта': 'mailto:kerelchickphone@gmail.com',
+                    'telegram': 'https://t.me/GniloyKartofel2025',
+                    'donationalerts': 'https://www.donationalerts.com/r/adekvat_2008',
+                };
+                
+                if (links[platform]) {
+                    window.open(links[platform], '_blank');
+                }
+            });
+        });
+    }
+    
+    // Вызываем функцию при загрузке и при смене страниц
+    setupSocialBricks();
+    
+    // Также обновляем обработчики при смене страницы
+    const originalUpdateContent = updateContent;
+    updateContent = function(page) {
+        originalUpdateContent(page);
+        setTimeout(setupSocialBricks, 50);
+    };
+});
     </script>
 </body>
 </html>
